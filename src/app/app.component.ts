@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
+import { Category } from './models/Category';
+import { Notes } from './models/Notes';
+import { NotesService } from './services/notes.service';
 
 @Component({
   selector: 'app-root',
@@ -9,9 +12,17 @@ import { SwUpdate } from '@angular/service-worker';
 export class AppComponent implements OnInit {
   title = 'app';
   panelOpenState = false;
+  note: Notes = {title: null, note: null, category: { value: null}};
+  notes: Array<Notes> = [];
+
+  categories: Category[] = [
+    {value: 'Trabajo'},
+    {value: 'Personal'}
+  ];
 
   constructor(
-    private _swUpdate: SwUpdate
+    private _swUpdate: SwUpdate,
+    private _noteService: NotesService
   ) {}
 
   ngOnInit() {
@@ -24,5 +35,28 @@ export class AppComponent implements OnInit {
         }
       );
     }
+    this.getNotes();
+  }
+
+  saveNote() {
+    this._noteService.createNote(this.note)
+      .then(() => {
+        this._noteService.getNotes().subscribe(
+          () => {
+            this.getNotes();
+          },
+          err => console.log(err)
+        );
+      })
+      .catch(err => console.log(err));
+  }
+
+  getNotes() {
+    this._noteService.getNotes().subscribe(
+      res => {
+        this.notes = res;
+      },
+      err => console.log(err)
+    );
   }
 }

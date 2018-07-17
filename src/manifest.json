@@ -3,7 +3,7 @@
   "name": "pwa-angular",
   "short_name": "pwa-angular",
   "description": "Una app que usa pwa",
-  "theme_color": "#1976d2",
+  "theme_color": "#FA005E",
   "background_color": "#fafafa",
   "related_applications": [ ],
   "display": "standalone",
