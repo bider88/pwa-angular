@@ -17,7 +17,7 @@ export class NotesService {
     public _afdb: AngularFireDatabase,
     private _afs: AngularFirestore
   ) {
-    this.notesCollection = this._afs.collection<Notes>('notes');
+    this.notesCollection = this._afs.collection<Notes>('notes', ref => ref.orderBy('createdAt', 'desc'));
     this.notes = this.notesCollection.valueChanges();
   }
 

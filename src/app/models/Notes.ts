@@ -4,6 +4,6 @@ export interface Notes {
   title: string;
   note: string;
   category?: Category;
-  createdAt?: Date;
+  createdAt?: any;
   id?: string;
 }

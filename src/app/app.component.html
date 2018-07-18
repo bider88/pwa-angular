@@ -1,19 +1,15 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row>
-    <span>PWA Notes</span>
+    <span>
+      <img width="25" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+      PWA Notes
+    </span>
   </mat-toolbar-row>
 </mat-toolbar>
-
-<div style="text-align:center">
-  <h2>
-    PWA Notes with Angular
-  </h2>
-  <img width="150" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-
+<mat-progress-bar mode="indeterminate" *ngIf="loadAction"></mat-progress-bar>
 <div class="container">
   <mat-accordion>
-    <mat-expansion-panel>
+    <mat-expansion-panel [expanded]="panelOpenState" (opened)="panelOpenState=true">
       <mat-expansion-panel-header>
         <mat-panel-title>
           Nota
@@ -42,7 +38,7 @@
         <textarea class="txtarea" matInput placeholder="Ingrese nota" [(ngModel)]="note.note"></textarea>
       </mat-form-field>
 
-      <button class="full-width" mat-raised-button color="primary" (click)="saveNote()">Guardar nota</button>
+      <button class="full-width" [disabled]="loadAction" mat-raised-button color="primary" (click)="saveNote()">Guardar nota</button>
 
     </mat-expansion-panel>
 
@@ -51,6 +47,7 @@
   <mat-card *ngFor="let note of notes">
     <mat-card-header>
       <mat-card-title>{{ note.title }}</mat-card-title>
+      <mat-card-subtitle><small>{{ note.createdAt.seconds| amFromUnix | amLocale:'es' | amTimeAgo }}</small></mat-card-subtitle>
       <mat-card-subtitle>{{ note.category.value }}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
@@ -58,10 +55,10 @@
           {{ note.note }}
       </p>
     </mat-card-content>
-    <!-- <mat-card-actions class="d-flex" >
-      <button class="box" mat-button>LIKE</button>
-      <button class="box" mat-button>SHARE</button>
-    </mat-card-actions> -->
+    <mat-card-actions class="d-flex" >
+      <!-- <button class="box" mat-button>LIKE</button> -->
+      <button class="box" mat-button (click)="deleteNote(note)">Eliminar</button>
+    </mat-card-actions>
   </mat-card>
 </div>
 

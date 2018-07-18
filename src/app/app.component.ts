@@ -3,6 +3,7 @@ import { SwUpdate } from '@angular/service-worker';
 import { Category } from './models/Category';
 import { Notes } from './models/Notes';
 import { NotesService } from './services/notes.service';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-root',
@@ -12,6 +13,7 @@ import { NotesService } from './services/notes.service';
 export class AppComponent implements OnInit {
   title = 'app';
   panelOpenState = false;
+  loadAction = false;
   note: Notes = {title: null, note: null, category: { value: null}};
   notes: Array<Notes> = [];
 
@@ -22,7 +24,8 @@ export class AppComponent implements OnInit {
 
   constructor(
     private _swUpdate: SwUpdate,
-    private _noteService: NotesService
+    private _noteService: NotesService,
+    private _snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
@@ -39,16 +42,17 @@ export class AppComponent implements OnInit {
   }
 
   saveNote() {
+    this.loadAction = true;
     this._noteService.createNote(this.note)
       .then(() => {
-        this._noteService.getNotes().subscribe(
-          () => {
-            this.getNotes();
-          },
-          err => console.log(err)
-        );
+        this.panelOpenState = false;
+        this.showSnackBar('Nota agregada', 'Aceptar');
+        this.loadAction = false;
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        console.log(err);
+        this.loadAction = false;
+      });
   }
 
   getNotes() {
@@ -59,4 +63,24 @@ export class AppComponent implements OnInit {
       err => console.log(err)
     );
   }
+
+  deleteNote(note: Notes) {
+    this.loadAction = true;
+    this._noteService.deleteNote(note)
+    .then(() => {
+      this.showSnackBar('Nota eliminada', 'Aceptar');
+      this.loadAction = false;
+    })
+    .catch(err => {
+      console.log(err);
+      this.loadAction = false;
+    });
+  }
+
+  showSnackBar(message: string = '', action: string = '') {
+    this._snackBar.open(message, action, {
+      duration: 2000,
+    });
+  }
+
 }
