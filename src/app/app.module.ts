@@ -17,6 +17,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialAngular } from './material-angular';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { MessagingService } from './services/messaging.service';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,9 @@ import { HttpClientModule } from '@angular/common/http';
     MomentModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+    MessagingService
+  ],
   bootstrap: [AppComponent],
   entryComponents: [
     AppBottomSheet,

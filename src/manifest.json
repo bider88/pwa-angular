@@ -1,14 +1,16 @@
 {
   "lang": "es",
-  "name": "pwa-angular",
-  "short_name": "pwa-angular",
-  "description": "Una app que usa pwa",
-  "theme_color": "#FA005E",
+  "name": "PWA Notes",
+  "short_name": "PWA Notes",
+  "description": "Una app que usa pwa guardando notas",
+  "theme_color": "#CF0058",
   "background_color": "#fafafa",
-  "related_applications": [ ],
   "display": "standalone",
   "scope": "/",
-  "start_url": "http://127.0.0.1:8080/",
+  "start_url": "/",
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "gcm_sender_id": "150011376416",
   "icons": [
     {
       "src": "assets/icons/icon-72x72.png",

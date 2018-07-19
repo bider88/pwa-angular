@@ -1,3 +1,10 @@
+.mat-nav {
+  position: fixed;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+}
+
 @media screen and (max-width:768px){
   .mat-form-field {
      width: 100%;
@@ -9,7 +16,8 @@
      width: 33%;
   }
 }
-.mat-expansion-panel, .mat-card {
+
+.mat-card {
   margin-bottom: 5px;
 }
 
@@ -42,10 +50,6 @@
 .btn-google {
   background-color: white !important;
   color: #333333;
-}
-
-.container {
-  margin: 10px;
 }
 
 .d-flex {

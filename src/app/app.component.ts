@@ -8,6 +8,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 // tslint:disable-next-line:max-line-length
 import { MatSnackBar, MatBottomSheet, MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { AuthService } from './services/auth.service';
+import { MessagingService } from './services/messaging.service';
 
 @Component({
   selector: 'app-root',
@@ -22,6 +23,7 @@ export class AppComponent implements OnInit {
   loading = false;
   note: Notes = {title: null, note: null, category: { value: null}};
   notes: Array<Notes> = [];
+  message: any = {};
 
   categories: Category[] = [
     {value: 'Trabajo'},
@@ -36,10 +38,13 @@ export class AppComponent implements OnInit {
     private _bottomSheet: MatBottomSheet,
     private _matIconRegistry: MatIconRegistry,
     private _domSanitizer: DomSanitizer,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private _messagingService: MessagingService
   ) {
     this._matIconRegistry.addSvgIcon( 'icon_google', this._domSanitizer.bypassSecurityTrustResourceUrl('../assets/icon-google.svg')
     );
+    this._messagingService.receiveMessage();
+    this.message = this._messagingService.currentMessage;
   }
 
   ngOnInit() {
