@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { AppComponent } from './app.component';
+import { AppComponent, AppBottomSheet, AppDialogOverview } from './app.component';
 
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
@@ -16,10 +16,13 @@ import { environment } from '../environments/environment';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialAngular } from './material-angular';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    AppBottomSheet,
+    AppDialogOverview
   ],
   imports: [
     BrowserModule,
@@ -32,9 +35,14 @@ import { FormsModule } from '@angular/forms';
     AngularFireStorageModule,
     AngularFireDatabaseModule,
     FormsModule,
-    MomentModule
+    MomentModule,
+    HttpClientModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [
+    AppBottomSheet,
+    AppDialogOverview
+  ]
 })
 export class AppModule { }

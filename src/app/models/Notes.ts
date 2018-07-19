@@ -6,4 +6,5 @@ export interface Notes {
   category?: Category;
   createdAt?: any;
   id?: string;
+  user?: string;
 }

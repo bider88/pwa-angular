@@ -23,16 +23,15 @@
   }],
   "dataGroups": [
     {
-      "name": "ReditAPI",
+      "name": "FirebaseAPI",
       "urls": [
-        "https://redit.com/r/pics.json",
-        "https://redit.com/r/**"
+        "https://pwa-notes-74b9f.firebaseio.com/**"
       ],
       "cacheConfig": {
         "strategy": "freshness",
-        "maxAge": "1d",
+        "maxAge": "2h",
         "maxSize": 100,
-        "timeout": "10s"
+        "timeout": "5s"
       }
     }
   ]

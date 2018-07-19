@@ -13,14 +13,36 @@
   margin-bottom: 5px;
 }
 
+.card-options {
+  float: left;
+  position: absolute;
+  right: 0;
+}
+
+.space {
+  margin: 1%;
+}
+
+.avatar {
+  border-radius: 50%;
+}
+
+.space-tool {
+  flex: 1 1 auto;
+}
+
 .full-width {
-  width: 100%;
+  width: 49%;
 }
 
 .txtarea {
   height: 15px !important;
 }
 
+.btn-google {
+  background-color: white !important;
+  color: #333333;
+}
 
 .container {
   margin: 10px;
