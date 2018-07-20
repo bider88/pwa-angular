@@ -9,6 +9,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { MatSnackBar, MatBottomSheet, MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { AuthService } from './services/auth.service';
 import { MessagingService } from './services/messaging.service';
+import { fromEvent } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -29,6 +31,8 @@ export class AppComponent implements OnInit {
     {value: 'Trabajo'},
     {value: 'Personal'}
   ];
+  online$ = fromEvent(window, 'online');
+  offline$ = fromEvent(window, 'offline');
 
   constructor(
     public authService: AuthService,
@@ -41,8 +45,16 @@ export class AppComponent implements OnInit {
     private _snackBar: MatSnackBar,
     private _messagingService: MessagingService
   ) {
-    this._matIconRegistry.addSvgIcon( 'icon_google', this._domSanitizer.bypassSecurityTrustResourceUrl('../assets/icon-google.svg')
-    );
+
+    this.online$.subscribe(e => {
+      if (e.type === 'online') { this.showSnackBar('Conexión reestablecida'); }
+    });
+
+    this.offline$.subscribe(e => {
+      if (e.type === 'offline') { this.showSnackBar('Conexión perdida'); this.authService.logout(); }
+    });
+
+    this._matIconRegistry.addSvgIcon( 'icon_google', this._domSanitizer.bypassSecurityTrustResourceUrl('../assets/icon-google.svg'));
     this._messagingService.receiveMessage();
     this.message = this._messagingService.currentMessage;
   }
@@ -113,19 +125,21 @@ export class AppComponent implements OnInit {
   }
 
   getNotes() {
-    if (JSON.parse(localStorage.getItem('user'))) {
-      if (JSON.parse(localStorage.getItem('user')).uid) {
-        this.loading = true;
-        this._noteService.getNotes().subscribe(
-          res => {
-            this.notes = res;
-            this.loading = false;
-          },
-          err => {
-            // console.log(err);
-            this.loading = false;
-          }
-        );
+    if (this.authService.user) {
+      if (JSON.parse(localStorage.getItem('user'))) {
+        if (JSON.parse(localStorage.getItem('user')).uid) {
+          this.loading = true;
+          this._noteService.getNotes().subscribe(
+            res => {
+              this.notes = res;
+              this.loading = false;
+            },
+            err => {
+              // console.log(err);
+              this.loading = false;
+            }
+          );
+        }
       }
     }
   }

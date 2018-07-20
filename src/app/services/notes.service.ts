@@ -20,17 +20,21 @@ export class NotesService {
     private _authService: AuthService,
     private _afs: AngularFirestore
   ) {
-    this._authService.user.subscribe(
-      res => {
-        if (res) {
-          this.uid = res.uid;
-          // tslint:disable-next-line:max-line-length
-          this.notesCollection = this._afs.collection<Notes>('notes', ref => ref.where('user', '==', this.uid).orderBy('createdAt', 'desc'));
-          this.notes = this.notesCollection.valueChanges();
-        }
-      },
-      err => console.log(err)
-    );
+    if (this._authService.user) {
+      this._authService.user.subscribe(
+        res => {
+          if (res) {
+            this.uid = res.uid;
+            // tslint:disable-next-line:max-line-length
+            this.notesCollection = this._afs.collection<Notes>('notes', ref => ref.where('user', '==', this.uid).orderBy('createdAt', 'desc'));
+            this.notes = this.notesCollection.valueChanges();
+          }
+        },
+        err => console.log(err)
+      );
+    }  else {
+      this._authService.logout();
+    }
   }
 
   getNotes() {

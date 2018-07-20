@@ -18,17 +18,27 @@ export class AuthService {
     private _authAngularFire: AngularFireAuth,
     private _angularFireStore: AngularFirestore
   ) {
-    this.user = this._authAngularFire.authState.pipe(
-      switchMap(user => {
-        if (user) {
-          return this._angularFireStore.doc<User>(`users/${user.uid}`).valueChanges();
-        } else {
-          return of(null);
-        }
-      }),
-      tap(user => localStorage.setItem('user', JSON.stringify(user))),
-      startWith(JSON.parse(localStorage.getItem('user')))
-    );
+    this.init();
+  }
+
+  init() {
+    if (localStorage.getItem('user') !== 'undefined') {
+
+      this.user = this._authAngularFire.authState.pipe(
+        switchMap(user => {
+          if (user) {
+            return this._angularFireStore.doc<User>(`users/${user.uid}`).valueChanges();
+          } else {
+            return of(null);
+          }
+        }),
+        tap(user => {
+          localStorage.setItem('user', JSON.stringify(user));
+        }),
+        startWith(JSON.parse(localStorage.getItem('user')))
+      );
+
+    }
   }
 
   login() {
@@ -40,6 +50,8 @@ export class AuthService {
     return this._authAngularFire.auth
       .signInWithPopup(provider)
       .then(credential => {
+        localStorage.setItem('user', JSON.stringify(credential.user));
+        this.init();
         return this.updateUserData(credential.user);
       })
       .catch(error => this.handleError(error));
